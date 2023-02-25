@@ -1,0 +1,90 @@
+import random
+
+class User:
+    num_of_users = 0
+    
+    def __init__(self, name, gender, salary):
+        self.name = name
+        self.gender = gender
+        self.salary = salary
+        self.acc_no = random.randint(10000, 99999)
+        User.num_of_users += 1
+    
+    def showdetails(self):
+        print("Name:", self.name)
+        print("Gender:", self.gender)
+        print("Salary:", self.salary)
+        print("Account Number:", self.acc_no)
+        
+class Bank:
+    __balance = 0
+    
+    def __init__(self, name, gender, salary):
+        self.user = User(name, gender, salary)
+    
+    def deposit(self, amount):
+        Bank.__balance += amount
+        print(f"{amount} deposited successfully.")
+    
+    def withdraw(self, amount):
+        if amount > Bank.__balance:
+            print("Insufficient balance!")
+            self.viewbalance()
+        elif amount >= 100 and amount <= Bank.__balance:
+            Bank.__balance -= amount
+            print("Thank you for visiting.")
+            self.viewbalance()
+        elif amount < 100:
+            print("You cannot withdraw less than 100.")
+            self.viewbalance()
+    
+    def viewbalance(self):
+        self.user.showdetails()
+        print("Balance:", Bank.__balance)
+        
+    def transfer(self, amt, user):
+        if amt > Bank.__balance:
+            print("Insufficient balance!")
+            self.viewbalance()
+        elif amt >= 1 and amt <= Bank.__balance:
+            Bank.__balance -= amt
+            user.bank.__balance += amt
+            print("Amount transferred successfully.")
+            self.viewbalance()
+        elif amt < 1:
+            print("You cannot transfer less than 1.")
+            self.viewbalance()
+
+# create users and banks
+user1 = User("Alice", "Female", 50000)
+user2 = User("Bob", "Male", 60000)
+
+bank1 = Bank("Alice", "Female", 50000)
+bank2 = Bank("Bob", "Male", 60000)
+
+# main program loop
+while True:
+    print("\n1. Deposit")
+    print("2. Withdraw")
+    print("3. Transfer")
+    print("4. Check Balance")
+    print("5. Exit")
+    
+    choice = input("\nEnter your choice (1-5): ")
+    
+    if choice == '1':
+        amount = int(input("Enter the amount to deposit: "))
+        bank1.deposit(amount)
+    elif choice == '2':
+        amount = int(input("Enter the amount to withdraw: "))
+        bank1.withdraw(amount)
+    elif choice == '3':
+        amount = int(input("Enter the amount to transfer: "))
+        bank1.transfer(amount, bank2)
+    elif choice == '4':
+        bank1.viewbalance()
+    elif choice == '5':
+        print("Thank you for using our banking system!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
